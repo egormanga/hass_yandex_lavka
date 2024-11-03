@@ -1,0 +1,18 @@
+{
+  "domain": "yandex_lavka",
+  "version": "0.1.0",
+  "name": "Yandex.Lavka",
+  "codeowners": [
+    "@egormanga"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "http",
+    "yandex_station"
+  ],
+  "documentation": "https://apps.sdore.me/hass_yandex_lavka",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://apps.sdore.me/hass_yandex_lavka/issues",
+  "requirements": []
+}

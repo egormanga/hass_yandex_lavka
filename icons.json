@@ -1,0 +1,24 @@
+{
+  "entity": {
+    "sensor": {
+      "orders": {
+        "default": "mdi:moped",
+        "state": {
+          "0": "mdi:moped-outline"
+        }
+      },
+      "orders_active": {
+        "default": "mdi:moped",
+        "state": {
+          "0": "mdi:moped-outline"
+        }
+      },
+      "order": {
+        "default": "mdi:moped",
+        "state": {
+          "closed": "mdi:moped-outline"
+        }
+      }
+    }
+  }
+}
