@@ -30,7 +30,7 @@ class YandexLavkaServiceInfoEntity(CoordinatorEntity[YandexLavkaServiceInfoCoord
         super().__init__(*args, **kwargs)
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, self.coordinator.config_entry.entry_id)},
-            name=DEFAULT_NAME,
+            name=f"{DEFAULT_NAME} {self.coordinator.config_entry.title}",
             entry_type=DeviceEntryType.SERVICE,
             configuration_url=BASE_URL,
         )
@@ -114,7 +114,7 @@ class YandexLavkaOrdersEntity(CoordinatorEntity[YandexLavkaOrdersCoordinator]):
         super().__init__(*args, **kwargs)
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, self.coordinator.config_entry.entry_id)},
-            name=DEFAULT_NAME,
+            name=f"{DEFAULT_NAME} {self.coordinator.config_entry.title}",
             entry_type=DeviceEntryType.SERVICE,
             configuration_url=BASE_URL,
         )
