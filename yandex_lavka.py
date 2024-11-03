@@ -16,7 +16,12 @@ class YandexLavka:
     def __init__(self, session: YandexSession):
         self.session = session
 
-    async def get_orders(self) -> list[dict]:
+    async def service_info(self, location: tuple[float | str, float | str]) -> dict:
+        r = await self.session.get(f"{API_BASE_URL}/providers/v2/service-info", params={f"position[location][{ii}]": i for ii, i in enumerate(location)})
+
+        return await r.json()
+
+    async def tracked_orders(self) -> list[dict]:
         r = await self.session.get(f"{API_BASE_URL}/providers/orders/v1/tracked-orders")
 
         return await r.json()

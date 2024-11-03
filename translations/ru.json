@@ -62,6 +62,15 @@
   },
   "entity": {
     "sensor": {
+      "delivery_cost": {
+        "name": "Стоимость доставки"
+      },
+      "delivery_time": {
+        "name": "Время доставки"
+      },
+      "cashback": {
+        "name": "Кешбэк"
+      },
       "orders": {
         "name": "Заказы"
       },

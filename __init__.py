@@ -1,5 +1,6 @@
 """ Yandex.Lavka integration. """
 
+import asyncio
 import logging
 
 from homeassistant.config_entries import ConfigEntry
@@ -16,12 +17,13 @@ from homeassistant.helpers import (
     config_validation as cv,
     device_registry as dr,
 )
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 import voluptuous as vol
 
 from ..yandex_station.core.const import DATA_CONFIG
 from ..yandex_station.core.yandex_session import YandexSession
 from .const import DOMAIN
-from .coordinator import YandexLavkaCoordinator
+from .coordinator import YandexLavkaOrdersCoordinator, YandexLavkaServiceInfoCoordinator
 from .yandex_lavka import YandexLavka
 
 
@@ -76,12 +78,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: YandexLavkaConfigEntry):
     if not entry.update_listeners:
         entry.add_update_listener(async_update_options)
 
-    coordinator = YandexLavkaCoordinator(hass, lavka)
-    await coordinator.async_config_entry_first_refresh()
+    data = hass.data[DOMAIN][entry.unique_id] = {
+        'service_info_coordinator': YandexLavkaServiceInfoCoordinator(hass, lavka),
+        'orders_coordinator': YandexLavkaOrdersCoordinator(hass, lavka),
+    }
+    await asyncio.gather(*(i.async_config_entry_first_refresh() for i in data.values() if isinstance(i, DataUpdateCoordinator)))
 
-    hass.data[DOMAIN][entry.unique_id] = {'coordinator': coordinator}
-
-    hass.async_create_task(hass.config_entries.async_forward_entry_setups(entry, PLATFORMS))
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
 

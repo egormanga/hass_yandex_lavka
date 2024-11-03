@@ -62,6 +62,15 @@
   },
   "entity": {
     "sensor": {
+      "delivery_cost": {
+        "name": "Delivery cost"
+      },
+      "delivery_time": {
+        "name": "Delivery time"
+      },
+      "cashback": {
+        "name": "Cashback"
+      },
       "orders": {
         "name": "Orders"
       },

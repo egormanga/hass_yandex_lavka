@@ -1,6 +1,15 @@
 {
   "entity": {
     "sensor": {
+      "delivery_cost": {
+        "default": "mdi:moped"
+      },
+      "delivery_time": {
+        "default": "mdi:timer"
+      },
+      "cashback": {
+        "default": "mdi:cash-refund"
+      },
       "orders": {
         "default": "mdi:moped",
         "state": {
