@@ -25,15 +25,15 @@ class YandexLavkaServiceInfoCoordinator(DataUpdateCoordinator):
         self.lavka = lavka
 
     async def _async_update_data(self) -> dict:
-        #try:
-        async with async_timeout.timeout(10):
-            service_info = await self.lavka.service_info((self.hass.config.longitude, self.hass.config.latitude))
+        try:
+            async with async_timeout.timeout(10):
+                service_info = await self.lavka.service_info((self.hass.config.longitude, self.hass.config.latitude))
         #except ApiAuthError as err:
         #    # Raising ConfigEntryAuthFailed will cancel future updates
         #    # and start a config flow with SOURCE_REAUTH (async_step_reauth)
         #    raise ConfigEntryAuthFailed() from err
-        #except ApiError as err:
-        #    raise UpdateFailed(f"Error communicating with API: {err}")
+        except Exception as ex:
+            raise UpdateFailed() from ex
 
         return service_info
 
@@ -50,14 +50,14 @@ class YandexLavkaOrdersCoordinator(DataUpdateCoordinator):
         self.lavka = lavka
 
     async def _async_update_data(self) -> dict:
-        #try:
-        async with async_timeout.timeout(10):
-            orders = await self.lavka.tracked_orders()
+        try:
+            async with async_timeout.timeout(10):
+                orders = await self.lavka.tracked_orders()
         #except ApiAuthError as err:
         #    # Raising ConfigEntryAuthFailed will cancel future updates
         #    # and start a config flow with SOURCE_REAUTH (async_step_reauth)
         #    raise ConfigEntryAuthFailed() from err
-        #except ApiError as err:
-        #    raise UpdateFailed(f"Error communicating with API: {err}")
+        except Exception as ex:
+            raise UpdateFailed() from ex
 
         return {i['id']: i for i in orders}
