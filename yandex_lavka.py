@@ -2,7 +2,7 @@ import asyncio
 import logging
 
 from ..yandex_station.core.yandex_session import YandexSession
-from .const import BASE_URL
+from .const import BASE_URL, DepotType
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -17,7 +17,7 @@ class YandexLavka:
         self.session = session
 
     async def service_info(self, location: tuple[float | str, float | str]) -> dict:
-        r = await self.session.get(f"{API_BASE_URL}/providers/v2/service-info", params={f"position[location][{ii}]": i for ii, i in enumerate(location)})
+        r = await self.session.get(f"{API_BASE_URL}/providers/v2/service-info?depotType={DepotType.SUPERMARKET}", params={f"position[location][{ii}]": i for ii, i in enumerate(location)})
 
         return await r.json()
 
