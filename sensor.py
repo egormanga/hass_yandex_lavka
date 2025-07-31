@@ -19,7 +19,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: YandexLavkaConfigEntry, 
     orders_coordinator: YandexLavkaOrdersCoordinator = data['orders_coordinator']
 
     async_add_entities(itertools.chain(
-        map(lambda x: x(service_info_coordinator), (DeliveryCostEntity, DeliveryTimeEntity, CashbackEntity)),
+        map(lambda x: x(service_info_coordinator), (DeliveryCostEntity, DeliveryTimeEntity, MinimalCartPriceEntity, CashbackEntity)),
         map(lambda x: x(orders_coordinator), (OrdersEntity, ActiveOrdersEntity)),
         (OrderEntity(orders_coordinator, i) for i in orders_coordinator.data),
     ), update_before_add=True)
@@ -83,6 +83,34 @@ class DeliveryTimeEntity(YandexLavkaServiceInfoEntity):
     @property
     def _text(self) -> str:
         return self.coordinator.data['deliveryTimeText']
+
+
+class MinimalCartPriceEntity(YandexLavkaServiceInfoEntity):
+    _attr_translation_key = 'minimal_cart_price'
+    _attr_has_entity_name = True
+    _unrecorded_attributes = {MATCH_ALL}
+
+    def __init__(self, coordinator):
+        super().__init__(coordinator)
+        self._attr_unique_id = f"{self.coordinator.config_entry.entry_id}_{self.translation_key}"
+        self._attr_unit_of_measurement = self._currency
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        pricing = self._pricing
+
+        self._attr_state = pricing['minimalCartPrice']
+        self._attr_extra_state_attributes = self.coordinator.data
+
+        self.async_write_ha_state()
+
+    @property
+    def _currency(self) -> str:
+        return self.coordinator.data['currencySign']
+
+    @property
+    def _pricing(self) -> dict:
+        return self.coordinator.data['pricingConditions']
 
 
 class CashbackEntity(YandexLavkaServiceInfoEntity):

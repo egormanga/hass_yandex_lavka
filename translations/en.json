@@ -68,6 +68,9 @@
       "delivery_time": {
         "name": "Delivery time"
       },
+      "minimal_cart_price": {
+        "name": "Minimal cart price"
+      },
       "cashback": {
         "name": "Cashback"
       },

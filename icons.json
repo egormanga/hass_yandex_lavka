@@ -7,6 +7,9 @@
       "delivery_time": {
         "default": "mdi:timer"
       },
+      "minimal_cart_price": {
+        "default": "mdi:cart-arrow-down"
+      },
       "cashback": {
         "default": "mdi:cash-refund"
       },

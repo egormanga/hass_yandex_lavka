@@ -68,6 +68,9 @@
       "delivery_time": {
         "name": "Время доставки"
       },
+      "minimal_cart_price": {
+        "name": "Минимальная сумма заказа"
+      },
       "cashback": {
         "name": "Кешбэк"
       },
