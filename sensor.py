@@ -279,7 +279,7 @@ class ParcelEntity(YandexLavkaParcelsEntity):
         parcel = self._parcel
 
         self._attr_state = parcel['state']
-        self._attr_entity_picture = parcel['trackingInfo']['groceryImage']
+        self._attr_entity_picture = parcel['products'][0]['imageUrl']
         self._attr_translation_placeholders = {
             'parcel_no': parcel['refOrder'],
         }
