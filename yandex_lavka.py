@@ -25,3 +25,8 @@ class YandexLavka:
         r = await self.session.get(f"{API_BASE_URL}/providers/orders/v1/tracked-orders")
 
         return await r.json()
+
+    async def parcels_by_depot(self, location: tuple[float | str, float | str]) -> dict:
+        r = await self.session.get(f"{API_BASE_URL}/parcels/v3/orders-by-depot", params={'longitude': location[0], 'latitude': location[1]})
+
+        return await r.json()

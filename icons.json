@@ -26,9 +26,21 @@
         }
       },
       "order": {
-        "default": "mdi:moped",
+        "default": "mdi:shopping",
         "state": {
-          "closed": "mdi:moped-outline"
+          "closed": "mdi:shopping-outline"
+        }
+      },
+      "parcels": {
+        "default": "mdi:package-variant-closed",
+        "state": {
+          "0": "mdi:package-variant-closed-remove"
+        }
+      },
+      "parcel": {
+        "default": "mdi:package",
+        "state": {
+          "received": "mdi:package-check"
         }
       }
     }

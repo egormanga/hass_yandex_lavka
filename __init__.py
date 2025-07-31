@@ -23,7 +23,11 @@ import voluptuous as vol
 from ..yandex_station.core.const import DATA_CONFIG
 from ..yandex_station.core.yandex_session import YandexSession
 from .const import DOMAIN
-from .coordinator import YandexLavkaOrdersCoordinator, YandexLavkaServiceInfoCoordinator
+from .coordinator import (
+    YandexLavkaOrdersCoordinator,
+    YandexLavkaParcelsCoordinator,
+    YandexLavkaServiceInfoCoordinator,
+)
 from .yandex_lavka import YandexLavka
 
 
@@ -81,6 +85,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: YandexLavkaConfigEntry):
     data = hass.data[DOMAIN][entry.unique_id] = {
         'service_info_coordinator': YandexLavkaServiceInfoCoordinator(hass, lavka),
         'orders_coordinator': YandexLavkaOrdersCoordinator(hass, lavka),
+        'parcels_coordinator': YandexLavkaParcelsCoordinator(hass, lavka),
     }
     await asyncio.gather(*(i.async_config_entry_first_refresh() for i in data.values() if isinstance(i, DataUpdateCoordinator)))
 

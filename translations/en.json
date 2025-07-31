@@ -82,6 +82,12 @@
       },
       "order": {
         "name": "Order № {order_no}"
+      },
+      "parcels": {
+        "name": "Parcels"
+      },
+      "parcel": {
+        "name": "Parcel № {parcel_no}"
       }
     }
   }

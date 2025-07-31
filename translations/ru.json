@@ -106,6 +106,18 @@
         "appName": {
           "lavka_web": "сайт Лавки"
         }
+      },
+      "parcels": {
+        "name": "Заказы из Маркета"
+      },
+      "parcel": {
+        "name": "Заказ из Маркета № {parcel_no}",
+        "type": {
+          "on_demand": "по клику"
+        },
+        "state": {
+          "received": "готов к выдаче"
+        }
       }
     }
   }

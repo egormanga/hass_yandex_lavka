@@ -61,3 +61,28 @@ class YandexLavkaOrdersCoordinator(DataUpdateCoordinator):
             raise UpdateFailed() from ex
 
         return {i['id']: i for i in orders}
+
+
+class YandexLavkaParcelsCoordinator(DataUpdateCoordinator):
+    def __init__(self, hass: HomeAssistant, lavka: YandexLavka):
+        super().__init__(
+            hass,
+            _LOGGER,
+            name=DEFAULT_NAME,
+            update_interval=datetime.timedelta(seconds=15),
+            always_update=True,
+        )
+        self.lavka = lavka
+
+    async def _async_update_data(self) -> dict:
+        try:
+            async with async_timeout.timeout(10):
+                parcels = await self.lavka.parcels_by_depot((self.hass.config.longitude, self.hass.config.latitude))
+        #except ApiAuthError as err:
+        #    # Raising ConfigEntryAuthFailed will cancel future updates
+        #    # and start a config flow with SOURCE_REAUTH (async_step_reauth)
+        #    raise ConfigEntryAuthFailed() from err
+        except Exception as ex:
+            raise UpdateFailed() from ex
+
+        return {i['orderId']: i for i in parcels['data']['orders']}
