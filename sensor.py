@@ -269,7 +269,7 @@ class ParcelEntity(YandexLavkaParcelsEntity):
         self._parcel_id = parcel_id
         parcel = self._parcel
         self._attr_unique_id = f"{self.coordinator.config_entry.entry_id}_{self.translation_key}_{slugify(parcel_id)}"
-        self._attr_entity_registry_visible_default = (parcel.get('status', 'received') == 'received')
+        self._attr_entity_registry_visible_default = (parcel.get('state', 'received') == 'received')
         self._attr_translation_placeholders = {
             'parcel_no': parcel.get('refOrder', parcel_id),
         }
@@ -278,7 +278,7 @@ class ParcelEntity(YandexLavkaParcelsEntity):
     def _handle_coordinator_update(self) -> None:
         parcel = self._parcel
 
-        self._attr_state = parcel['status']
+        self._attr_state = parcel['state']
         self._attr_entity_picture = parcel['trackingInfo']['groceryImage']
         self._attr_translation_placeholders = {
             'parcel_no': parcel['refOrder'],
