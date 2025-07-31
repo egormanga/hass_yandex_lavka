@@ -24,14 +24,22 @@ async def async_setup_entry(hass: HomeAssistant, entry: YandexLavkaConfigEntry, 
     parcels_coordinator: YandexLavkaParcelsCoordinator = data['parcels_coordinator']
 
     async_add_entities(itertools.chain(
-        map(lambda x: x(service_info_coordinator), (DeliveryCostEntity, DeliveryTimeEntity, MinimalCartPriceEntity, CashbackEntity)),
-
-        map(lambda x: x(orders_coordinator), (OrdersEntity, ActiveOrdersEntity)),
-        (OrderEntity(orders_coordinator, i) for i in orders_coordinator.data),
-
-        map(lambda x: x(parcels_coordinator), (ParcelsEntity,)),
-        (ParcelEntity(parcels_coordinator, i) for i in parcels_coordinator.data),
+        map(lambda cls: cls(service_info_coordinator), (DeliveryCostEntity, DeliveryTimeEntity, MinimalCartPriceEntity, CashbackEntity)),
+        map(lambda cls: cls(orders_coordinator), (OrdersEntity, ActiveOrdersEntity)),
+        map(lambda cls: cls(parcels_coordinator), (ParcelsEntity,)),
     ), update_before_add=True)
+
+    def check_entities(cls, coordinator, seen: set = None):
+        if (seen is None): seen = set()
+        entities = (set(coordinator.data) - seen)
+        async_add_entities((cls(coordinator, i) for i in entities), update_before_add=True)
+        seen |= entities
+        return seen
+
+    seen_orders = check_entities(OrderEntity, orders_coordinator)
+    seen_parcels = check_entities(ParcelEntity, parcels_coordinator)
+    entry.async_on_unload(orders_coordinator.async_add_listener(lambda: check_entities(OrderEntity, orders_coordinator, seen_orders)))
+    entry.async_on_unload(orders_coordinator.async_add_listener(lambda: check_entities(ParcelEntity, parcels_coordinator, seen_parcels)))
 
 
 class YandexLavkaServiceInfoEntity(CoordinatorEntity[YandexLavkaServiceInfoCoordinator]):
